@@ -15,11 +15,16 @@ class Book:
     def add_copies(self, copies):
         """Добавляем копию книги в библиотеку"""
         self.copies += copies
+        print(f"Книга {self.title} добавлена в список, всего {self.copies} экземпляров книги")
         return self.copies
 
     def remove_copies(self, copies):
         """Удаляем копию книги из библиотеки"""
-        self.copies -= copies
+        if self.copies >= 0:
+            self.copies -= copies
+        else:
+            raise ValueError("Экземпляров данной книги 0")
+        print(f"Книга {self.title} взята, всего экземпляров книги - {self.copies}")
         return self.copies
 
 class User:
@@ -27,20 +32,26 @@ class User:
         """Класс USER будет описывать человека, который пользуется услугами библиотеки"""
         self.first_name = first_name
         self.last_name = last_name
-        self.username = None # По умолчанию нет
-        self._password = None # По умолчанию нет
-        self._email = None # По умолчанию нет
+        self.username = None # По умолчанию None
+        self._password = None # По умолчанию None
+        self._email = None # По умолчанию None
         self.borrowed_books = [] # Список взятых книг пользователем
 
     def borrow_book(self, book):
         """Метод для взятия книги человеком."""
         self.borrowed_books.append(book)
+        print(f"Книга {book} взята!")
         return book
 
     def return_book(self, book):
         """Возврат книги человеком"""
         self.borrowed_books.remove(book)
+        print(f"Книга {book} возвращена в библиотеку!")
         return book
+
+    def user_book(self, book):
+        books = ", ".join([str(book) for book in self.borrowed_books])
+        return f"Пользователь {self.first_name} {self.last_name} взял книги: {books}"
 
 class Library:
     """Класс библиотека с списком юзеров и книг"""
@@ -55,3 +66,17 @@ class Library:
             return True
         else:
             return False
+
+    def lend_book(self, book, user):
+        if book.copies > 0:
+            book.remove_copies(1)
+            user.borrow_book(book)
+            print(f"Книга {self.title} выдана пользователю {user.first_name} {user.last_name}.")
+        else:
+            print(f"Книга {book.title} недоступна для выдачи!")
+
+
+
+
+
+
