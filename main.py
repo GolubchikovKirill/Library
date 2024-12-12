@@ -24,7 +24,6 @@ class Library:
     def add_book(self, book):
         if book not in self.books:
             self.books.append(book)
-            self.users.append(User(book.first_name, book.last_name))
             return True
         else:
             return False
